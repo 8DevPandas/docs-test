@@ -84,10 +84,12 @@ export function ChatSidebar({
           <Button
             variant="ghost"
             className="w-full justify-start gap-2 text-muted-foreground"
-            onClick={() => router.push("/docs")}
+            asChild
           >
-            <BookOpen className="size-4" />
-            Documentación
+            <Link href="/docs">
+              <BookOpen className="size-4" />
+              Documentación
+            </Link>
           </Button>
         </SidebarHeader>
 

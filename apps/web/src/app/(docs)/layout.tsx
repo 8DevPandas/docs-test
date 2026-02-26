@@ -14,9 +14,11 @@ export default async function DocsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const [session, docEntries, project] = await Promise.all([
+    auth.api.getSession({ headers: await headers() }),
+    getDocEntries(),
+    getRequiredProject(),
+  ]);
 
   if (!session?.user) {
     redirect("/login");
@@ -25,9 +27,6 @@ export default async function DocsLayout({
   if (!session.user.emailVerified) {
     redirect(`/verify-email?email=${encodeURIComponent(session.user.email)}`);
   }
-
-  const docEntries = await getDocEntries();
-  const project = await getRequiredProject();
 
   return (
     <TooltipProvider>

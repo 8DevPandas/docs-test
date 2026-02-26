@@ -15,9 +15,10 @@ export default async function ChatLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const [session, project] = await Promise.all([
+    auth.api.getSession({ headers: await headers() }),
+    getRequiredProject(),
+  ]);
 
   if (!session?.user) {
     redirect("/login");
@@ -26,8 +27,6 @@ export default async function ChatLayout({
   if (!session.user.emailVerified) {
     redirect(`/verify-email?email=${encodeURIComponent(session.user.email)}`);
   }
-
-  const project = await getRequiredProject();
 
   return (
     <div className="fixed inset-0 flex overflow-hidden">
