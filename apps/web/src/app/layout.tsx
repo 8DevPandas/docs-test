@@ -1,0 +1,45 @@
+import type { Metadata, Viewport } from "next";
+
+import { Geist, Geist_Mono } from "next/font/google";
+
+import "../index.css";
+import Providers from "@/components/providers";
+import { getProjectName } from "@/lib/project-context";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  interactiveWidget: "resizes-content",
+};
+
+export async function generateMetadata(): Promise<Metadata> {
+  const projectName = await getProjectName();
+  return {
+    title: projectName,
+    description: `Asistente de documentación de ${projectName}`,
+  };
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="es" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Providers>{children}</Providers>
+      </body>
+    </html>
+  );
+}

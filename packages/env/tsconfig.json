@@ -1,0 +1,3 @@
+{
+  "extends": "@tandem-docs/config/tsconfig.base.json"
+}

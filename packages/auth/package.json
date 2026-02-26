@@ -1,0 +1,25 @@
+{
+  "name": "@tandem-docs/auth",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@tandem-docs/db": "workspace:*",
+    "@tandem-docs/env": "workspace:*",
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "resend": "^6.9.2",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@tandem-docs/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

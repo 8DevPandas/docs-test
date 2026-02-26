@@ -1,0 +1,28 @@
+{
+  "name": "@tandem-docs/api",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@tandem-docs/auth": "workspace:*",
+    "@tandem-docs/db": "workspace:*",
+    "@tandem-docs/env": "workspace:*",
+    "@trpc/client": "catalog:",
+    "@trpc/server": "catalog:",
+    "dotenv": "catalog:",
+    "drizzle-orm": "^0.45.1",
+    "next": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@tandem-docs/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
