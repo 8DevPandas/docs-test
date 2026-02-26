@@ -12,8 +12,8 @@ function extractProjectSlug(request: NextRequest): string | null {
     return process.env.DEV_PROJECT_SLUG ?? "tandem";
   }
 
-  // Apex domain (no subdomain) — only allow API routes
-  if (host === baseDomain) {
+  // Apex domain or www — no project slug
+  if (host === baseDomain || host === `www.${baseDomain}`) {
     return null;
   }
 
