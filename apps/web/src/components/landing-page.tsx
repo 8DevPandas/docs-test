@@ -1,4 +1,4 @@
-import { MessageSquare } from "lucide-react";
+import { ExternalLink, MessageSquare } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,6 +8,8 @@ interface Project {
   slug: string;
   name: string;
   logoUrl: string | null;
+  repoName: string | null;
+  repoUrl: string | null;
 }
 
 export function LandingPage({
@@ -72,7 +74,21 @@ export function LandingPage({
                 )}
                 <div className="min-w-0 flex-1">
                   <p className="font-medium truncate">{project.name}</p>
-                  <p className="text-xs text-muted-foreground">{project.slug}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-xs text-muted-foreground">{project.slug}</p>
+                    {project.repoUrl && (
+                      <a
+                        href={project.repoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-1 text-xs text-accent hover:text-accent/80 transition-colors"
+                      >
+                        <ExternalLink className="size-3" />
+                        {project.repoName ?? "Repo"}
+                      </a>
+                    )}
+                  </div>
                 </div>
                 <MessageSquare className="size-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
               </a>

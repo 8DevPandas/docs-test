@@ -17,7 +17,13 @@ export default async function RootPage() {
 
   const [session, projects] = await Promise.all([
     auth.api.getSession({ headers: await headers() }),
-    db.select({ slug: schema.project.slug, name: schema.project.name, logoUrl: schema.project.logoUrl }).from(schema.project).orderBy(schema.project.name),
+    db.select({
+      slug: schema.project.slug,
+      name: schema.project.name,
+      logoUrl: schema.project.logoUrl,
+      repoName: schema.project.repoName,
+      repoUrl: schema.project.repoUrl,
+    }).from(schema.project).orderBy(schema.project.name),
   ]);
 
   return (

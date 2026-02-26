@@ -49,6 +49,20 @@ if ! echo "$PROJECT_SLUG" | grep -qE '^[a-z0-9-]+$'; then
   exit 1
 fi
 
+# ── Detect repo info ──────────────────────────────────────
+
+REPO_URL=""
+REPO_NAME=""
+if command -v git &>/dev/null && git rev-parse --is-inside-work-tree &>/dev/null; then
+  REMOTE_URL=$(git remote get-url origin 2>/dev/null || true)
+  if [ -n "$REMOTE_URL" ]; then
+    # Convert SSH to HTTPS for display
+    REPO_URL=$(echo "$REMOTE_URL" | sed -E 's|^git@([^:]+):|https://\1/|' | sed 's/\.git$//')
+    REPO_NAME=$(basename "$REPO_URL")
+    echo "✅ Detected repo: $REPO_NAME ($REPO_URL)"
+  fi
+fi
+
 # ── Generate GitHub Action ──────────────────────────────────
 
 WORKFLOW_DIR=".github/workflows"
@@ -76,13 +90,21 @@ jobs:
           HUB_URL="${HUB_URL}"
           PROJECT_SLUG="${PROJECT_SLUG}"
           PROJECT_NAME="${PROJECT_NAME}"
+          REPO_NAME="${REPO_NAME}"
+          REPO_URL="${REPO_URL}"
 
           # Register project (idempotent — returns existing if already created)
           echo "📝 Registering project..."
+          REGISTER_PAYLOAD=\$(jq -n \\
+            --arg slug "\$PROJECT_SLUG" \\
+            --arg name "\$PROJECT_NAME" \\
+            --arg repoName "\$REPO_NAME" \\
+            --arg repoUrl "\$REPO_URL" \\
+            '{slug: \$slug, name: \$name} + (if \$repoName != "" then {repoName: \$repoName} else {} end) + (if \$repoUrl != "" then {repoUrl: \$repoUrl} else {} end)')
           curl -sf -X POST "\$HUB_URL/api/projects/register" \\
             -H "Content-Type: application/json" \\
             -H "x-api-key: \$ADMIN_API_KEY" \\
-            -d "{\\"slug\\": \\"\$PROJECT_SLUG\\", \\"name\\": \\"\$PROJECT_NAME\\"}"
+            -d "\$REGISTER_PAYLOAD"
           echo ""
           echo "✅ Project registered"
 

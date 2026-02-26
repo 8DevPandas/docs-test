@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { BookOpen, MessageSquarePlus, Trash2, LogOut } from "lucide-react";
+import { BookOpen, ExternalLink, MessageSquarePlus, Trash2, LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -32,10 +32,14 @@ export function ChatSidebar({
   user,
   projectName,
   logoUrl,
+  repoName,
+  repoUrl,
 }: {
   user: { name: string; email: string };
   projectName: string;
   logoUrl?: string | null;
+  repoName?: string | null;
+  repoUrl?: string | null;
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -89,6 +93,16 @@ export function ChatSidebar({
             <BookOpen className="size-4" />
             Documentación
           </Button>
+          {repoUrl && (
+            <Button
+              variant="ghost"
+              className="w-full justify-start gap-2 text-muted-foreground"
+              render={<a href={repoUrl} target="_blank" rel="noopener noreferrer" />}
+            >
+              <ExternalLink className="size-4" />
+              {repoName ?? "Repositorio"}
+            </Button>
+          )}
         </SidebarHeader>
 
         <Separator />

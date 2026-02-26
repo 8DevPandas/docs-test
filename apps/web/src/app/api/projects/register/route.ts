@@ -12,7 +12,13 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json();
-  const { slug, name, logoUrl } = body as { slug?: string; name?: string; logoUrl?: string };
+  const { slug, name, logoUrl, repoName, repoUrl } = body as {
+    slug?: string;
+    name?: string;
+    logoUrl?: string;
+    repoName?: string;
+    repoUrl?: string;
+  };
 
   if (!slug || !name) {
     return Response.json(
@@ -35,12 +41,24 @@ export async function POST(req: Request) {
     .where(eq(project.slug, slug));
 
   if (existing) {
+    const updates: Record<string, string> = {};
+    if (repoName) updates.repoName = repoName;
+    if (repoUrl) updates.repoUrl = repoUrl;
+    if (Object.keys(updates).length > 0) {
+      await db.update(project).set(updates).where(eq(project.id, existing.id));
+    }
     return Response.json({ projectId: existing.id, existing: true });
   }
 
   const [newProject] = await db
     .insert(project)
-    .values({ slug, name, ...(logoUrl ? { logoUrl } : {}) })
+    .values({
+      slug,
+      name,
+      ...(logoUrl ? { logoUrl } : {}),
+      ...(repoName ? { repoName } : {}),
+      ...(repoUrl ? { repoUrl } : {}),
+    })
     .returning();
 
   return Response.json({ projectId: newProject!.id, existing: false });
