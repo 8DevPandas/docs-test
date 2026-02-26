@@ -52,12 +52,10 @@ export function DocsSidebar({
         <Button
           variant="outline"
           className="w-full mt-3 justify-start gap-2"
-          asChild
+          render={<Link href="/chat" />}
         >
-          <Link href="/chat">
-            <MessageSquare className="size-4" />
-            Ir al Chat
-          </Link>
+          <MessageSquare className="size-4" />
+          Ir al Chat
         </Button>
       </SidebarHeader>
 
@@ -67,11 +65,9 @@ export function DocsSidebar({
         <ScrollArea className="flex-1 px-2">
           <SidebarMenu className="py-2">
             <SidebarMenuItem>
-              <SidebarMenuButton isActive={pathname === "/docs"} asChild>
-                <Link href="/docs">
-                  <BookOpen className="size-4" />
-                  <span className="truncate">Índice General</span>
-                </Link>
+              <SidebarMenuButton isActive={pathname === "/docs"} render={<Link href="/docs" />}>
+                <BookOpen className="size-4" />
+                <span className="truncate">Índice General</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
@@ -79,10 +75,8 @@ export function DocsSidebar({
               const isActive = pathname === `/docs/${doc.slug}`;
               return (
                 <SidebarMenuItem key={doc.slug}>
-                  <SidebarMenuButton isActive={isActive} asChild>
-                    <Link href={`/docs/${doc.slug}`}>
-                      <span className="truncate">{doc.title}</span>
-                    </Link>
+                  <SidebarMenuButton isActive={isActive} render={<Link href={`/docs/${doc.slug}`} />}>
+                    <span className="truncate">{doc.title}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               );

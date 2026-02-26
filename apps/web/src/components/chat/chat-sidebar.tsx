@@ -84,12 +84,10 @@ export function ChatSidebar({
           <Button
             variant="ghost"
             className="w-full justify-start gap-2 text-muted-foreground"
-            asChild
+            render={<Link href="/docs" />}
           >
-            <Link href="/docs">
-              <BookOpen className="size-4" />
-              Documentación
-            </Link>
+            <BookOpen className="size-4" />
+            Documentación
           </Button>
         </SidebarHeader>
 
