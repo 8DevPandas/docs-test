@@ -15,7 +15,9 @@ export const auth = betterAuth({
     provider: "pg",
     schema: schema,
   }),
-  trustedOrigins: [env.CORS_ORIGIN],
+  trustedOrigins: env.BASE_DOMAIN
+    ? [`https://${env.BASE_DOMAIN}`, `https://*.${env.BASE_DOMAIN}`]
+    : [env.BETTER_AUTH_URL],
   advanced: {
     ...(env.COOKIE_DOMAIN
       ? {
