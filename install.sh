@@ -86,38 +86,31 @@ jobs:
           echo ""
           echo "✅ Project registered"
 
-          # Build and upload docs
+          # Build and upload docs (using temp files to avoid argument length limits)
           echo "📄 Uploading documentation..."
-          DOCS_JSON="["
-          FIRST=true
+          TMPFILE=\$(mktemp)
+          echo '[]' > "\$TMPFILE"
           SORT_ORDER=0
           for file in \$(ls DOCS/*.md | sort); do
             FILENAME=\$(basename "\$file")
             SLUG="\${FILENAME%.md}"
-            CONTENT=\$(cat "\$file")
-            TITLE=\$(echo "\$CONTENT" | grep -m1 '^# ' | sed 's/^# //' || echo "\$SLUG")
+            TITLE=\$(grep -m1 '^# ' "\$file" | sed 's/^# //' || echo "\$SLUG")
             [ -z "\$TITLE" ] && TITLE="\$SLUG"
-            DOC_JSON=\$(jq -n \\
-              --arg slug "\$SLUG" \\
-              --arg title "\$TITLE" \\
-              --arg content "\$CONTENT" \\
-              --argjson sortOrder "\$SORT_ORDER" \\
-              '{slug: \$slug, title: \$title, content: \$content, sortOrder: \$sortOrder}')
-            if [ "\$FIRST" = true ]; then
-              FIRST=false
-            else
-              DOCS_JSON="\$DOCS_JSON,"
-            fi
-            DOCS_JSON="\$DOCS_JSON\$DOC_JSON"
+            jq --rawfile content "\$file" \\
+               --arg slug "\$SLUG" \\
+               --arg title "\$TITLE" \\
+               --argjson sortOrder "\$SORT_ORDER" \\
+               '. + [{slug: \$slug, title: \$title, content: \$content, sortOrder: \$sortOrder}]' \\
+               "\$TMPFILE" > "\${TMPFILE}.tmp" && mv "\${TMPFILE}.tmp" "\$TMPFILE"
             SORT_ORDER=\$((SORT_ORDER + 1))
           done
-          DOCS_JSON="\$DOCS_JSON]"
-          PAYLOAD=\$(jq -n --argjson docs "\$DOCS_JSON" '{docs: \$docs, replace: true}')
+          jq '{docs: ., replace: true}' "\$TMPFILE" > "\${TMPFILE}.payload"
           RESPONSE=\$(curl -sf -X POST "\$HUB_URL/api/projects/\$PROJECT_SLUG/docs" \\
             -H "Content-Type: application/json" \\
             -H "x-api-key: \$ADMIN_API_KEY" \\
-            -d "\$PAYLOAD")
+            -d @"\${TMPFILE}.payload")
           echo "\$RESPONSE"
+          rm -f "\$TMPFILE" "\${TMPFILE}.tmp" "\${TMPFILE}.payload"
           echo "✅ Docs synced"
 
           # Upload logo if exists
