@@ -58,8 +58,8 @@ export function middleware(request: NextRequest) {
   requestHeaders.set("x-project-slug", projectSlug);
 
   const sessionCookie =
-    request.cookies.get("better-auth.session_token") ??
-    request.cookies.get("__Secure-better-auth.session_token");
+    request.cookies.get("tandem-docs.session_token") ??
+    request.cookies.get("__Secure-tandem-docs.session_token");
 
   const isPublicPath = publicPaths.some((p) => pathname.startsWith(p));
 

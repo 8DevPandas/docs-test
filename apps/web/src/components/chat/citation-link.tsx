@@ -4,7 +4,7 @@ import { FileText } from "lucide-react";
 
 import { useDocReference } from "./doc-reference-context";
 
-const REF_PATTERN = /^\/ref\/([^/]+)\/([^/]+)$/;
+const REF_PATTERN = /^\/ref\/([^/]+)(?:\/([^/]+))?$/;
 
 export function CitationLink({
   href,
@@ -34,7 +34,7 @@ export function CitationLink({
   return (
     <button
       type="button"
-      onClick={() => open(slug!, sectionSlug!)}
+      onClick={() => open(slug!, sectionSlug ?? null)}
       data-citation
       className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-accent/15 text-accent text-sm border border-accent/20 hover:bg-accent/25 transition-colors cursor-pointer"
     >
