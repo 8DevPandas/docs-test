@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, LogOut, MessageSquare } from "lucide-react";
+import { BookOpen, ExternalLink, LogOut, MessageSquare } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -27,11 +27,15 @@ export function DocsSidebar({
   docEntries,
   projectName,
   logoUrl,
+  repoName,
+  repoUrl,
 }: {
   user: { name: string; email: string };
   docEntries: DocEntry[];
   projectName: string;
   logoUrl?: string | null;
+  repoName?: string | null;
+  repoUrl?: string | null;
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -57,6 +61,16 @@ export function DocsSidebar({
           <MessageSquare className="size-4" />
           Ir al Chat
         </Button>
+        {repoUrl && (
+          <Button
+            variant="ghost"
+            className="w-full justify-start gap-2 text-muted-foreground"
+            render={<a href={repoUrl} target="_blank" rel="noopener noreferrer" />}
+          >
+            <ExternalLink className="size-4" />
+            {repoName ?? "Repositorio"}
+          </Button>
+        )}
       </SidebarHeader>
 
       <Separator />

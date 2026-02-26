@@ -32,7 +32,7 @@ export default async function ChatLayout({
     <div className="fixed inset-0 flex overflow-hidden">
       <TooltipProvider>
         <SidebarProvider>
-          <ChatSidebar user={session.user} projectName={project.name} logoUrl={project.logoUrl} />
+          <ChatSidebar user={session.user} projectName={project.name} logoUrl={project.logoUrl} repoName={project.repoName} repoUrl={project.repoUrl} />
           <DocReferenceProvider>
             <main className="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden">
               <MobileHeader projectName={project.name} />

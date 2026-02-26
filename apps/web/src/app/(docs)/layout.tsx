@@ -31,7 +31,7 @@ export default async function DocsLayout({
   return (
     <TooltipProvider>
       <SidebarProvider>
-        <DocsSidebar user={session.user} docEntries={docEntries} projectName={project.name} logoUrl={project.logoUrl} />
+        <DocsSidebar user={session.user} docEntries={docEntries} projectName={project.name} logoUrl={project.logoUrl} repoName={project.repoName} repoUrl={project.repoUrl} />
         <main className="flex-1 flex flex-col h-svh overflow-hidden">
           <DocsMobileHeader />
           <div className="flex-1 overflow-y-auto">{children}</div>
