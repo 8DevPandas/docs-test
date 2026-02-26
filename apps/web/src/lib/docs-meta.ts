@@ -3,7 +3,7 @@ import "server-only";
 import { db, schema } from "@tandem-docs/db";
 import { eq } from "drizzle-orm";
 
-import { getProject } from "./project-context";
+import { getRequiredProject } from "./project-context";
 
 const { document } = schema;
 
@@ -14,7 +14,7 @@ export interface DocEntry {
 }
 
 export async function getDocEntries(): Promise<DocEntry[]> {
-  const project = await getProject();
+  const project = await getRequiredProject();
 
   const docs = await db
     .select({

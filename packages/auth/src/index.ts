@@ -19,11 +19,11 @@ export const auth = betterAuth({
     ? [`https://${env.BASE_DOMAIN}`, `https://*.${env.BASE_DOMAIN}`]
     : [env.BETTER_AUTH_URL],
   advanced: {
-    ...(env.COOKIE_DOMAIN
+    ...(env.BASE_DOMAIN
       ? {
           crossSubDomainCookies: {
             enabled: true,
-            domain: env.COOKIE_DOMAIN,
+            domain: `.${env.BASE_DOMAIN}`,
           },
         }
       : {}),

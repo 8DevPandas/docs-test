@@ -15,7 +15,7 @@ import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 
 import { generateSectionsPrompt } from "@/lib/docs-sections";
-import { getProject, getProjectName } from "@/lib/project-context";
+import { getRequiredProject, getProjectName } from "@/lib/project-context";
 import { buildSystemPrompt } from "@/lib/system-prompt";
 
 export const maxDuration = 60;
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
   const { messages, chatId }: { messages: UIMessage[]; chatId?: string } =
     await req.json();
 
-  const currentProject = await getProject();
+  const currentProject = await getRequiredProject();
   let activeChatId = chatId;
 
   if (!activeChatId) {

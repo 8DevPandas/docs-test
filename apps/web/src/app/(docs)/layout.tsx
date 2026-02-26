@@ -7,7 +7,7 @@ import { DocsSidebar } from "@/components/docs/docs-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { getDocEntries } from "@/lib/docs-meta";
-import { getProject } from "@/lib/project-context";
+import { getRequiredProject } from "@/lib/project-context";
 
 export default async function DocsLayout({
   children,
@@ -27,7 +27,7 @@ export default async function DocsLayout({
   }
 
   const docEntries = await getDocEntries();
-  const project = await getProject();
+  const project = await getRequiredProject();
 
   return (
     <TooltipProvider>

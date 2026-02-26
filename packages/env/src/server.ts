@@ -11,7 +11,6 @@ export const env = createEnv({
     NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
     BASE_DOMAIN: z.string().optional(),
     DEV_PROJECT_SLUG: z.string().default("tandem"),
-    COOKIE_DOMAIN: z.string().optional(),
     ADMIN_API_KEY: z.string().optional(),
   },
   runtimeEnv: process.env,

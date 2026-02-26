@@ -62,6 +62,7 @@ on:
   push:
     paths:
       - 'DOCS/**'
+      - 'assets/logo.*'
       - '.github/workflows/sync-docs.yml'
     branches: [main]
   workflow_dispatch:
@@ -118,6 +119,19 @@ jobs:
             -d "\$PAYLOAD")
           echo "\$RESPONSE"
           echo "✅ Docs synced"
+
+          # Upload logo if exists
+          LOGO=\$(ls assets/logo.* 2>/dev/null | head -1 || true)
+          if [ -n "\$LOGO" ]; then
+            echo "🖼️ Uploading logo..."
+            MIME=\$(file --mime-type -b "\$LOGO")
+            curl -sf -X POST "\$HUB_URL/api/projects/\$PROJECT_SLUG/logo" \\
+              -H "Content-Type: \$MIME" \\
+              -H "x-api-key: \$ADMIN_API_KEY" \\
+              --data-binary "@\$LOGO"
+            echo ""
+            echo "✅ Logo uploaded"
+          fi
         env:
           ADMIN_API_KEY: \${{ secrets.ADMIN_API_KEY }}
 WORKFLOW_EOF

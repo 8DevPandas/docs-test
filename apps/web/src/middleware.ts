@@ -17,7 +17,7 @@ function extractProjectSlug(request: NextRequest): string | null {
     return null;
   }
 
-  // Subdomain extraction: {slug}.chat.tandemdigital.com
+  // Subdomain extraction: {slug}.toscanaproducciones.com
   if (host.endsWith(`.${baseDomain}`)) {
     return host.slice(0, -(baseDomain.length + 1));
   }
@@ -48,9 +48,9 @@ export function middleware(request: NextRequest) {
     return response;
   }
 
-  // Non-API pages on apex domain without a project slug → 404
+  // Apex/www with no project slug — pass through (landing page)
   if (!projectSlug) {
-    return new NextResponse("Not Found", { status: 404 });
+    return NextResponse.next();
   }
 
   // Set project slug header for downstream

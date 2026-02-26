@@ -4,7 +4,7 @@ import { db, schema } from "@tandem-docs/db";
 import { eq } from "drizzle-orm";
 
 import { slugify } from "./docs-sections-client";
-import { getProject } from "./project-context";
+import { getRequiredProject } from "./project-context";
 
 export { slugify };
 
@@ -60,7 +60,7 @@ function parseSections(content: string): DocSection[] {
 }
 
 export async function generateSectionsIndex(): Promise<DocSectionsIndex[]> {
-  const project = await getProject();
+  const project = await getRequiredProject();
 
   const docs = await db
     .select({

@@ -5,7 +5,7 @@ import { and, eq } from "drizzle-orm";
 
 import { getDocEntries } from "./docs-meta";
 import type { DocEntry } from "./docs-meta";
-import { getProject } from "./project-context";
+import { getRequiredProject } from "./project-context";
 
 const { document } = schema;
 
@@ -23,7 +23,7 @@ export async function getDocBySlug(slug: string): Promise<{
   content: string;
   meta: DocEntry;
 } | null> {
-  const project = await getProject();
+  const project = await getRequiredProject();
 
   const [doc] = await db
     .select()
@@ -46,7 +46,7 @@ export async function getDocBySlug(slug: string): Promise<{
 }
 
 export async function getDocsIndex(): Promise<string> {
-  const project = await getProject();
+  const project = await getRequiredProject();
 
   const [doc] = await db
     .select()

@@ -7,7 +7,7 @@ import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 
 import { ChatInterface } from "@/components/chat/chat-interface";
-import { getProject } from "@/lib/project-context";
+import { getRequiredProject } from "@/lib/project-context";
 
 export default async function ChatPage({
   params,
@@ -24,7 +24,7 @@ export default async function ChatPage({
     notFound();
   }
 
-  const currentProject = await getProject();
+  const currentProject = await getRequiredProject();
   const [found] = await db
     .select()
     .from(chat)

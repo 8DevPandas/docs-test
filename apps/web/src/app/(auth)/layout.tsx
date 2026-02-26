@@ -1,13 +1,13 @@
 import Image from "next/image";
 
-import { getProject } from "@/lib/project-context";
+import { getRequiredProject } from "@/lib/project-context";
 
 export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const project = await getProject();
+  const project = await getRequiredProject();
 
   return (
     <div className="flex min-h-svh flex-col items-center justify-center px-4">

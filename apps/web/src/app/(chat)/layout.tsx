@@ -8,7 +8,7 @@ import { DocReferenceSheet } from "@/components/chat/doc-reference-sheet";
 import { MobileHeader } from "@/components/chat/mobile-header";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { getProject } from "@/lib/project-context";
+import { getRequiredProject } from "@/lib/project-context";
 
 export default async function ChatLayout({
   children,
@@ -27,7 +27,7 @@ export default async function ChatLayout({
     redirect(`/verify-email?email=${encodeURIComponent(session.user.email)}`);
   }
 
-  const project = await getProject();
+  const project = await getRequiredProject();
 
   return (
     <div className="fixed inset-0 flex overflow-hidden">

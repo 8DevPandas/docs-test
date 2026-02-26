@@ -3,11 +3,12 @@ import { getProject } from "@/lib/project-context";
 
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
   const project = await getProject();
+  const name = project?.name ?? "Tandem Docs";
 
   return {
-    name: project.name,
-    short_name: project.slug,
-    description: `Asistente de documentación de ${project.name}`,
+    name,
+    short_name: project?.slug ?? "tandem-docs",
+    description: `Asistente de documentación de ${name}`,
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",
