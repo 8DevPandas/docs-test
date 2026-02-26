@@ -103,7 +103,7 @@ export function ChatSidebar({
                     <SidebarMenuButton
                       isActive={isActive}
                       className="group/item w-full"
-                      onClick={() => router.push(`/chat/${chatItem.id}`)}
+                      render={<Link href={`/chat/${chatItem.id}`} />}
                     >
                       <span className="truncate flex-1 text-left">{chatItem.title}</span>
                       <div
@@ -118,7 +118,6 @@ export function ChatSidebar({
                           if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault();
                             e.stopPropagation();
-                            setDeleteTarget(chatItem.id);
                           }
                         }}
                         className={cn(

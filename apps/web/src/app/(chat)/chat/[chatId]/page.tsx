@@ -16,35 +16,36 @@ export default async function ChatPage({
 }) {
   const { chatId } = await params;
 
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const [session, currentProject] = await Promise.all([
+    auth.api.getSession({ headers: await headers() }),
+    getRequiredProject(),
+  ]);
 
   if (!session?.user) {
     notFound();
   }
 
-  const currentProject = await getRequiredProject();
-  const [found] = await db
-    .select()
-    .from(chat)
-    .where(
-      and(
-        eq(chat.id, chatId),
-        eq(chat.userId, session.user.id),
-        eq(chat.projectId, currentProject.id),
+  const [[found], messages] = await Promise.all([
+    db
+      .select()
+      .from(chat)
+      .where(
+        and(
+          eq(chat.id, chatId),
+          eq(chat.userId, session.user.id),
+          eq(chat.projectId, currentProject.id),
+        ),
       ),
-    );
+    db
+      .select()
+      .from(message)
+      .where(eq(message.chatId, chatId))
+      .orderBy(message.createdAt),
+  ]);
 
   if (!found) {
     notFound();
   }
-
-  const messages = await db
-    .select()
-    .from(message)
-    .where(eq(message.chatId, chatId))
-    .orderBy(message.createdAt);
 
   const initialMessages = messages.map((m) => ({
     id: m.id,
