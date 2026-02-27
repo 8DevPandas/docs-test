@@ -81,7 +81,6 @@ export function LandingPage({
                         href={project.repoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
                         className="inline-flex items-center gap-1 text-xs text-accent hover:text-accent/80 transition-colors"
                       >
                         <ExternalLink className="size-3" />
